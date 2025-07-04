@@ -1,0 +1,46 @@
+app:
+  telegram:
+    token: ${TELEGRAM_TOKEN}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    group: bot-group
+    topics:
+      notification: notification
+  app:
+    url: ${SCRAPPER_URL:http://scrapper:8100}
+  http:
+    timeout:
+      connect: ${TIMEOUT_CONNECT:2s}
+      response: ${TIMEOUT_CONNECT:5s}
+    retry:
+      max-attempts: ${RETRY_ATTEMPTS:5}
+      backoff-millis: ${RETRY_MILLIS:1000}
+      status-codes:
+        - TOO_MANY_REQUESTS
+        - INTERNAL_SERVER_ERROR
+        - BAD_GATEWAY
+        - SERVICE_UNAVAILABLE
+
+spring:
+  application:
+    name: bot
+
+management:
+  server:
+    port: 8201
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus,health,info"
+  metrics:
+    enable:
+      http.server.requests: true
+
+server:
+  port: 8081
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+
