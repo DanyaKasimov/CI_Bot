@@ -4,5 +4,5 @@ interface Command {
 
     fun isSupported(command: String): Boolean
 
-    fun execute()
+    fun execute(message: String)
 }
