@@ -33,4 +33,9 @@ class RepoService(private val repoRepository: RepoRepository,
         val repos: List<Repo> = repoRepository.findAllByRepoLink(repoLink)
         return repos.map { it.user }
     }
+
+    fun getListRepos(chatId: String): List<Repo> {
+        val user: User = userService.getUser(chatId)
+        return repoRepository.findAllByUser(user)
+    }
 }

@@ -8,16 +8,18 @@ import org.springframework.stereotype.Service
 class UserService(private val appHttpClient: AppHttpClient) {
 
     companion object {
-        private const val ADD_USER_ENDPOINT = "/api/users"
+        private const val USER_ENDPOINT = "/api/users"
     }
 
     fun register(chatId: String): UserDTO? {
         return appHttpClient.post(
-            "$ADD_USER_ENDPOINT/$chatId",
+            "$USER_ENDPOINT/$chatId",
             UserDTO::class.java,
             body = null)
             ?.body
     }
 
-    fun delete(chatId: String) {}
+    fun delete(chatId: String) {
+        appHttpClient.delete("$USER_ENDPOINT/$chatId", null)
+    }
 }

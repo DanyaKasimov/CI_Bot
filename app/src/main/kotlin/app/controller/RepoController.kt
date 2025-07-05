@@ -14,5 +14,5 @@ class RepoController(private val repoService: RepoService) : RepoAPI {
 
     override fun removeRepo(repoDTO: RepoDTO) = repoService.removeRepo(repoDTO)
 
-    override fun getUsersByRepoLink(repoLink: String): List<User> = repoService.getAllUsersByRepoLink(repoLink)
+    override fun getReposByUser(chatId: String): List<Repo> = repoService.getListRepos(chatId)
 }

@@ -20,8 +20,8 @@ interface RepoAPI {
     @Operation(summary = "Удалить репозиторий", description = "Удаляет репозиторий у пользователя")
     fun removeRepo(@RequestBody @Valid repoDTO: RepoDTO)
 
-    @GetMapping("/users/{repoLink}")
+    @GetMapping("/user/{chatId}")
     @Operation(summary = "Пользователи по репозиторию",
         description = "Получить всех пользователей, подписанных на репозиторий")
-    fun getUsersByRepoLink(@PathVariable("repoLink") @Valid repoLink: String): List<User>
+    fun getReposByUser(@PathVariable("chatId") @Valid chatId: String): List<Repo>
 }

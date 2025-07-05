@@ -1,7 +1,9 @@
 package app.client
 
 import app.config.AppConfig
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -43,6 +45,47 @@ class AppHttpClient(private val webClient: WebClient,
         }
     }
 
+    fun <T : Any?> delete(path: String,
+                          body: T? = null,
+                          queryParams: Map<String, String> = emptyMap()) {
+        val uri = buildUri(path, queryParams)
+        try {
+            val request = webClient
+                .method(HttpMethod.DELETE)
+                .uri(uri)
+
+            if (body != null) {
+                request
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .bodyValue(body)
+            }
+
+            request
+                .retrieve()
+                .toBodilessEntity()
+                .retryWhen(retry)
+                .block()
+        } catch (e: WebClientResponseException) {
+
+        }
+    }
+
+    fun <R> get(path: String,
+                responseType: ParameterizedTypeReference<R>,
+                queryParams: Map<String, String> = emptyMap()): ResponseEntity<R>? {
+        val uri = buildUri(path, queryParams)
+        return try {
+            webClient
+                .get()
+                .uri(uri)
+                .retrieve()
+                .toEntity(responseType)
+                .retryWhen(retry)
+                .block()
+        } catch (e: WebClientResponseException) {
+            null
+        }
+    }
 
     private fun buildUri(path: String, params: Map<String, String> = emptyMap()): URI {
         val multiValueMap = LinkedMultiValueMap<String, String>()

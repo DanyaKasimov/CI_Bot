@@ -16,4 +16,6 @@ interface RepoRepository : JpaRepository<Repo, UUID> {
     fun findAllByRepoLink(repoLink: String): List<Repo>
 
     fun deleteAllByUser(user: User)
+
+    fun findAllByUser(user: User): List<Repo>
 }

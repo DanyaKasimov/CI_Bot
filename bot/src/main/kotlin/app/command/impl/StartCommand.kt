@@ -1,6 +1,7 @@
-package app.command
+package app.command.impl
 
 import app.MessageSender
+import app.command.Command
 import app.constants.CommandType
 import app.service.UserService
 import app.state.StateHandler
